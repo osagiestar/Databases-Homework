@@ -285,7 +285,7 @@ cyf_classes=# SELECT classes.topic, attendances.studentid FROM classes, attendan
 
 cyf_classes=# 
 
-######
+###### the End
 
 When you have finished all of the questions - open a pull request with your answers to the `Databases-Homework` repository.
 
