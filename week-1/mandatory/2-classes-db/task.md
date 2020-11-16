@@ -21,7 +21,7 @@ cyf_classes(# address   VARCHAR(120),
 cyf_classes(# fav_prog  VARCHAR(20)
 cyf_classes(# );
 CREATE TABLE
-```
+
    cyf_classes=# \dt
  List of relations
  Schema |  Name   | Type  | Owner  
@@ -191,7 +191,7 @@ cyf_classes=# SELECT * FROM mentors;
   5 | Harry Williams |           6 | 9 Windsor Castle    | ProstgreSQL
 (5 rows)
 
-####
+######
 10. 
 cyf_classes=# SELECT * FROM mentors WHERE years_lived > 5;
  id |      name      | years_lived |     address      |  fav_prog   
@@ -293,7 +293,7 @@ When you have finished all of the questions - open a pull request with your answ
 
 1. Create a new database called `cyf_classes` (hint: use `createdb` in the terminal)
 2. Create a new table `mentors`, for each mentor we want to save their name, how many years they lived in Glasgow, their address and their favourite programming language.
-3. Insert 5 mentors in the `mentors` table (you can make up the data, it doesn't need to be accurate ;-)).
+3. Insert 5 mentors in the `mentors` table (you can make up the data, it doesn't need to be accurate).
 4. Create a new table `students`, for each student we want to save their name, address and if they have graduated from Code Your Future.
 5. Insert 10 students in the `students` table.
 6. Verify that the data you created for mentors and students are correctly stored in their respective tables (hint: use a `select` SQL statement).
@@ -311,3 +311,5 @@ When you have finished all of the questions - open a pull request with your answ
     - Retrieve all the students who are CYF graduates
     - Retrieve all the classes taught before June this year
     - Retrieve all the students (retrieving student ids only is fine) who attended the Javascript class (or any other class that you have in the `classes` table).
+
+
