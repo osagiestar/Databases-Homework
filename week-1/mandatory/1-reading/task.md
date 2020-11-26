@@ -185,7 +185,7 @@ cyf_hotels=# \d hotels                                            Table "public.
  rooms    | integer               |           | not null | 
  postcode | character varying(8)  |           |          | 
 Indexes:
-    "hotels_pkey" PRIMARY KEY, btree (id)
+    "hotels_pkey" PRIMARY KEY, b tree (id)
 Referenced by:
     TABLE "bookings" CONSTRAINT "bookings_hotel_id_fkey" FOREIGN KEY (hotel_id) REFERENCES hotels(id)
 
