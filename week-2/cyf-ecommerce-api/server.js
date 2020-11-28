@@ -13,12 +13,6 @@ const pool = new Pool({
   port: 5432,
 });
 
-// app.get("/products", function (req, res) {
-//   pool.query("SELECT * FROM products", (error, result) => {
-//     res.json(result.rows);
-//   });
-// });
-
 // loads all the customers on the DB
 app.get("/customers", function (req, res) {
   pool.query("SELECT * FROM customers", (error, result) => {
