@@ -162,6 +162,9 @@ SELECT products.product_name, products.unit_price, order_items.quantity FROM pro
 ##### 11
 SELECT customers.name, orders.order_reference, orders.order_date, products.product_name, suppliers.supplier_name FROM customers, order_items, orders, products, suppliers WHERE customers.id = orders.customer_id AND orders.id = order_items.order_id AND products.id = order_items.product_id AND suppliers.id = products.supplier_id;
 
+INNER JOIN ON OPTION with DESTRUCTING:
+SELECT c.name, o.order_reference, o.order_date, p.product_name, s.supplier_name FROM customers c INNER JOIN orders o ON c.id = o.customer_id INNER JOIN order_items o_i ON o.id = o_i.order_id INNER JOIN products p ON p.id = o_i.product_id INNER JOIN suppliers s ON s.id = p.supplier_id;
+
         name        | order_reference | order_date |      product_name       | supplier_name 
 --------------------+-----------------+------------+-------------------------+---------------
  Guy Crawford       | ORD001          | 2019-06-01 | Tee Shirt Olympic Games | Taobao
@@ -188,6 +191,9 @@ SELECT customers.name, orders.order_reference, orders.order_date, products.produ
 
 ##### 12 
 SELECT customers.name FROM customers, order_items, orders, products, suppliers WHERE customers.id = orders.customer_id AND orders.id = order_items.order_id AND products.id = order_items.product_id AND suppliers.id = products.supplier_id AND suppliers.country = 'China';
+
+INNER JOIN OPTION ON with DESTRUCTURING:
+SELECT c.name FROM customers c INNER JOIN orders o ON c.id = o.customer_id INNER JOIN order_items o_i ON o.id = o_i.order_id INNER JOIN products p ON p.id = o_i.product_id INNER JOIN suppliers s ON s.id = p.supplier_id WHERE s.country = 'China';
 
      name     
 --------------
