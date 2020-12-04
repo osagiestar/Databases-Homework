@@ -65,12 +65,12 @@ app.post("/products", (req, res) => {
   console.log(req.params.id);
   const newProductName = req.body.product_name;
   const newUnitPrice = req.body.unit_price;
-  const supplierId = req.body.supplier_id;
+  const supplierId = req.body.id;
   if (!Number.isInteger(newUnitPrice)) {
     return res.status(400).send("Product unit price must be an integer");
   }
   pool
-    .query("SELECT * FROM products WHERE supplier_id=$1", [supplierId])
+    .query("SELECT * FROM suppliers WHERE id=$1", [supplierId])
     .then((result) => {
       if (result.rows.length > 0) {
         const query =
@@ -81,11 +81,35 @@ app.post("/products", (req, res) => {
 
           .catch((e) => console.error(e));
       } else {
-        return res.status(202).send("The supplier exists on the database!");
+        return res.status(404).send("The supplier does not exist on the database!");
       }
     });
 });
 
-app.listen(3003, function () {
-  console.log("Server is listening on port 3003. Ready to accept requests!");
+app.post("/customers/:customerId/orders", (req, res) => {
+  const newOrderDate = req.body.order_date;
+  const newOrderRef = req.body.order_reference;  
+  const customerId = req.body.customerId;
+  // const customerId = req.body.customer_id;
+ 
+  pool
+    .query("SELECT * FROM orders WHERE customer_id=$1", [customerId])
+    .then((result) => {
+      if (result.rows.length > 0) {
+        const query =
+          "INSERT INTO orders (order_date, order_reference, customer_id) VALUES ($1, $2, $3)";
+        pool
+          .query(query, [newOrderDate, newOrderRef, customerId])
+          .then((result) => res.json(result.rows))
+
+          .catch((e) => console.error(e));
+      } else {
+        return res.status(404).send("The customer is not valid!");
+      }
+    });
+    console.log("result.rows.length");
+});
+
+app.listen(3004, function () {
+  console.log("Server is listening on port 3004. Ready to accept requests!");
 });
