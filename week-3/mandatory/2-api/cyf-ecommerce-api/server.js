@@ -32,7 +32,15 @@ app.get("/products", function (req, res) {
       .then((result) => res.json(result.rows))
       .catch((e) => console.error(e));
 }); 
+ 
+app.get("/customers/:id", function (req, res) {
+  const customerId = req.params.id;
+  pool
+    .query("SELECT * FROM customers WHERE id = $1", [customerId])
+    .then((result) => res.json(result.rows))
+    .catch((e) => console.error(e));
+});
 
-app.listen(3006, function () {
+app.listen(3002, function () {
   console.log("Server is listening on port 3006. Ready to accept requests!");
 });
