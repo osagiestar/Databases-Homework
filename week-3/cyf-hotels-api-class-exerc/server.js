@@ -54,7 +54,7 @@ app.post("/hotels/update", function (req, res) {
   );
 });
 
-##### Week 3 Exercise 1
+// ##### Week 3 Exercise 1
 app.post("/hotels", function (req, res) {
   const newHotelName = req.body.name;
   const newHotelRooms = req.body.rooms;
