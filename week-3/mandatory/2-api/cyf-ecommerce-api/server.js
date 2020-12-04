@@ -41,6 +41,26 @@ app.get("/customers/:id", function (req, res) {
     .catch((e) => console.error(e));
 });
 
+app.post("/customers", (req, res) => {
+  const newCustomerName = req.body.name;
+  const newCustomerAddress = req.body.address;
+  const newCustomerCity = req.body.city;
+  const newCustomerCountry = req.body.country;
+
+  const query =
+    "INSERT INTO customers (name, address, city, country) VALUES ($1, $2, $3, $4) returning *";
+
+  pool
+    .query(query, [
+      newCustomerName,
+      newCustomerAddress,
+      newCustomerCity,
+      newCustomerCountry,
+    ])
+    .then(() => res.json(query.rows))
+    .catch((e) => console.error(e));
+});
+
 app.listen(3002, function () {
   console.log("Server is listening on port 3006. Ready to accept requests!");
 });
