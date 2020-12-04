@@ -61,6 +61,31 @@ app.post("/customers", (req, res) => {
     .catch((e) => console.error(e));
 });
 
-app.listen(3002, function () {
-  console.log("Server is listening on port 3006. Ready to accept requests!");
+app.post("/products", (req, res) => {
+  console.log(req.params.id);
+  const newProductName = req.body.product_name;
+  const newUnitPrice = req.body.unit_price;
+  const supplierId = req.body.supplier_id;
+  if (!Number.isInteger(newUnitPrice)) {
+    return res.status(400).send("Product unit price must be an integer");
+  }
+  pool
+    .query("SELECT * FROM products WHERE supplier_id=$1", [supplierId])
+    .then((result) => {
+      if (result.rows.length > 0) {
+        const query =
+          "INSERT INTO products (product_name, unit_price, supplier_id) VALUES ($1, $2, $3)";
+        pool
+          .query(query, [newProductName, newUnitPrice, supplierId])
+          .then((result) => res.json(result.rows))
+
+          .catch((e) => console.error(e));
+      } else {
+        return res.status(202).send("The supplier exists on the database!");
+      }
+    });
+});
+
+app.listen(3003, function () {
+  console.log("Server is listening on port 3003. Ready to accept requests!");
 });
