@@ -165,7 +165,15 @@ app.delete("customers/:customerId", (req, res) => {
   });
 });
 
-
+app.get("/customers/:customerId/orders", function (req, res) {
+  let customerId = req.params.customerId;
+  let query =
+    "SELECT o.order_reference, o.order_date, p.product_name, p.unit_price, s.supplier_name, i.quantity FROM customers c, orders o, products p, order_items i, suppliers s WHERE c.id= o.customer_id AND o.id=i.order_id AND i.product_id=p.id AND s.id=p.supplier_id AND c.id=$1";
+  pool
+  .query(query, [customerId])
+  .then((result) => res.json(result.rows))
+  .catch((e) => console.error(e));
+});
 
 app.listen(3005, function () {
   console.log("Server is listening on port 3005. Ready to accept requests!");
