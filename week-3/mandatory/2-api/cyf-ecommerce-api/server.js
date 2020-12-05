@@ -110,6 +110,42 @@ app.post("/customers/:customerId/orders", (req, res) => {
     console.log("result.rows.length");
 });
 
+app.put("/customers/:customerId", (req, res) => {
+  const newCustomerId = req.params.customerId;
+  const newCustomerName = req.body.name;
+  const newCustomerAddress = req.body.address;
+  const newCustomerCountry = req.body.country;
+
+  const query =
+    "UPDATE customers SET name = $1, address = $2, country = $3 WHERE id = $4";
+  pool
+    .query(query, [
+      newCustomerName,
+      newCustomerAddress,
+      newCustomerCountry,
+      newCustomerId
+    ])
+    .then((result) => res.json(result.rows))
+    .catch((e) => console.error(e));
+})
+
+app.delete("/orders/:orderId", (req, res) => {
+  const orderId = req.params.orderId;
+  const query1 = "DELETE FROM order_items WHERE order_id = $1";
+  const query2 = "DELETE FROM orders WHERE id = $1";
+
+  pool.query(query1, [orderId])
+  .then (() => {
+    pool
+    .query(query2, [orderId])
+    .then (() => res.send(`Order ${orderId} is deleted!`))
+    .catch((e) => console.error(e));
+    })
+   .catch((e) => console.error(e));
+});
+
+
+
 app.listen(3004, function () {
   console.log("Server is listening on port 3004. Ready to accept requests!");
 });
