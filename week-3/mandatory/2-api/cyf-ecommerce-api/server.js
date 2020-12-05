@@ -144,8 +144,29 @@ app.delete("/orders/:orderId", (req, res) => {
    .catch((e) => console.error(e));
 });
 
+// I couldn't test this on Postman as order_date and order_reference are set to NOT NULL
+// So an order must have both order_date and order_reference 
+app.delete("customers/:customerId", (req, res) => {
+  const customerId = req.params.customerId;
+  const query1 = "SELECT * FROM orders WHERE customer_id = $1";
+  const query2 = "DELETE * FROM customers WHERE id = $1";
+  pool
+  .query(query1, customerId)
+  .then ((result) => {
+    if(result.rows.length > 0) {
+      res.send(`The customer ${customerId} has an order`);
+    }
+    else {
+      pool
+        .query(query2, [customerId])
+        .then(() => res.send(`Customer ${customerId} is deleted!`))
+        .catch((e) => console.error(e));
+    }
+  });
+});
 
 
-app.listen(3004, function () {
-  console.log("Server is listening on port 3004. Ready to accept requests!");
+
+app.listen(3005, function () {
+  console.log("Server is listening on port 3005. Ready to accept requests!");
 });
