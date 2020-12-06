@@ -13,24 +13,17 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: 5432,
 });
- 
-app.get("/products", function (req, res) {
-  let query = `SELECT * FROM products ORDER BY product_name`;
-  pool.query(query)
-  .then((result) => res.status(200).json(result.rows))
-  .catch((e) => console.error(e));
-}); 
 
 app.get("/products", function (req, res) {
-  let queryList = req.query.name;
-  let query = "SELECT * FROM products";
-    if(queryList) {
-      query = `SELECT * FROM products WHERE product_name LIKE '%${queryList}%'`;
-    };
-    pool
-      .query(query)
-      .then((result) => res.json(result.rows))
-      .catch((e) => console.error(e));
+  let queryList = req.query.name; 
+  // let queryList = req.query.search; // e.g this will still work with search, term or any other words.
+  if(queryList) {
+    query = `SELECT * FROM products WHERE product_name LIKE '%${queryList}%'`;
+  };
+  pool
+    .query(query)
+    .then((result) => res.status(200).json(result.rows))
+    .catch((e) => console.error(e));
 }); 
  
 app.get("/customers/:id", function (req, res) {
@@ -49,7 +42,6 @@ app.post("/customers", (req, res) => {
 
   const query =
     "INSERT INTO customers (name, address, city, country) VALUES ($1, $2, $3, $4) returning *";
-
   pool
     .query(query, [
       newCustomerName,
@@ -145,7 +137,7 @@ app.delete("/orders/:orderId", (req, res) => {
 });
 
 // I couldn't test this on Postman as order_date and order_reference are set to NOT NULL
-// So an order must have both order_date and order_reference 
+// So an Order must have both order_date and order_reference as FK
 app.delete("customers/:customerId", (req, res) => {
   const customerId = req.params.customerId;
   const query1 = "SELECT * FROM orders WHERE customer_id = $1";
